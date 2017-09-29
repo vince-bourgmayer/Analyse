@@ -1,0 +1,30 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {color: #00B7FF;}
+
+.bg-white{background-color: #FFFFFF;}
+.bg-black{background-color: black;}
+.huge-icon{font-size: 7vw;}
+.pad-1{padding:2%;}
+.pad-2{padding:3%;}
+.pad-3{padding:5%;}
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.row-height {
+  display: table;
+  table-layout: fixed;
+  height: 100%;
+  width: 100%;
+}
+.col-height {
+  display: table-cell;
+  float: none;
+  height: 100%;
+}
+.round-border{border-radius: 10px;}

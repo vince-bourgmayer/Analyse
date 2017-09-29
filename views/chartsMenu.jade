@@ -1,0 +1,29 @@
+extends layout
+
+block content
+    div.container-fluid.chartHere
+        .row
+            .col-xs-6.col-xs-offset-3
+                h1.text-center Vos graphiques
+        .row
+            .col-xs-8.col-xs-offset-2
+                if (charts.length >0)
+                    each val, index in charts
+                        .row
+                            .col-xs-4
+                                div(id='#{val.title.replace(/ /g, "")}')
+                else
+                    .row
+                        .col-xs-8.col-xs-offset-2
+                            p Vous n'avez aucun graphique pour le moment!
+                            p Commencer par en créer une!
+        .row
+            .col-xs-2.col-xs-offset-8
+                a(href="/chartsForm")
+                    button(type="button") Ajouter un graphique
+                br
+                a(href="/") Menu précédent
+
+block finalJS
+    script
+        $(function(){var chartsObject = [#{charts}];for(var i = 0; i < chartsObject.length;i++){var obj = chartsObject[i];console.log("#"+obj.title.replace(/ /g, ""));var h = new Highcharts.Chart({chart:{type:obj.title, renderTo: obj.title.replace(/ /g, "")},title:obj.title,xAxis:{title:obj.xAxisTitle},yAxis:{title:obj.yAxisTitle}});$.ajax({type: "POST",url: "loadDataForChart",data: {chart: obj},dataType: 'json',success: function(datas){console.log(datas);h.addSeries({name:'test', data:datas});}});}});

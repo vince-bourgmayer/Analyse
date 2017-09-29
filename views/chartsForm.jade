@@ -1,0 +1,73 @@
+extends layout
+
+block content
+  if (!usr)
+    .container
+      .row.text-center
+        .col-xs-6.col-xs-offset-3
+          h1 Error
+          br
+          p Erreur de login
+  if (usr)
+    .container-fluid
+      .row
+        .col-xs-8.col-xs-offset-2
+          h2.text-center Choisir une enquête
+      .row
+        .col-xs-8.col-xs-offset-2
+          form(action="" method="post")
+            input(type='hidden' name='usr' value='#{usr._id}')
+            select.form-control(name='survey')
+              option(value='none') Choisir une enquête
+              each val in surveys
+                option(value='#{val._id}')=val.title
+            a(href='/')
+              button.btn.btn-default(type="button") Annuler
+            &nbsp;
+            button.btn.btn-primary(type='submit') Valider
+            br
+
+      if surveySel
+        .row
+          .col-xs-6.col-xs-offset-3
+            h1.text-center Appliquer des filtres
+          .col-xs-8.col-xs-offset-2
+            h3.text-center=surveySel.title
+          form(action="addChart" method="post")
+            input(type='hidden' name='usr' value='#{usr._id}')
+            input(type='hidden' name='surveyID' value='#{surveySel._id}')
+            .row
+              .col-xs-8.col-xs-offset-2
+                table.table.table-striped.dataTable
+                    thead
+                      tr
+                        th Filtre
+                        each val, index in surveySel.measuresTypes
+                          th.numCol
+                            p #{val.title} 
+                            p (#{val.type})
+                              if val.standard
+                                span (#{val.standard})
+                              if val.possibleValues.length > 0
+                                span (#{val.possibleValues})
+                    tbody
+                      each val,index in filter
+                        tr
+                          td
+                            p #{val}
+                          each val, index in surveySel.measuresTypes
+                            td
+                              .form-group
+                                if val.type == "semantic"
+                                  input.form-control(type='text', name="val") 
+                                if val.type =="numeric" 
+                                  input.form-control(type='number', name="val")
+                                if val.type =="date" 
+                                  input.form-control(type='text', name="val")                                                                
+      .row
+        .col-xs-3.col-xs-offset-9
+          button.btn.btn-default(type="submit") Créer
+      .row
+        .col-xs-2.col-xs-offset-5
+          a(href="/") 
+              button.btn.btn-primary.btn-lg.btn-block(type='button') Retour

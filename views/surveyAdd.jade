@@ -1,0 +1,28 @@
+extends layout
+
+block content
+    div.container-fluid
+        .row
+            .col-xs-6.col-xs-offset-3
+                h1.text-center Start a new survey
+        .row
+            .col-xs-8.col-xs-offset-2
+                form(role='form' action="/addSurvey" method="post")
+                    .form-group
+                        label Title
+                        input.form-control(type='text', name="title", placeholder='Enter Title')
+                    .form-group
+                        label Start date
+                        input.form-control.datePicker(type='text', name="sDate", id='sdate')
+                        label End date
+                        input.form-control.datePicker(type='text', name="eDate", id='edate')
+                    .form-group
+                        label Icon
+                        button.form-control(name="icon", role="iconpicker")
+                    .form-group
+                        label Tags
+                        input.form-control.tokenField(type='text', name='tags')
+                    a(href='/survey')
+                        button.btn.btn-default(type="button") Cancel
+                    &nbsp;
+                    button.btn.btn-primary(type='submit') Submit

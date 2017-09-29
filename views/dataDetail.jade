@@ -1,0 +1,96 @@
+extends layout
+
+block content
+  div.container-fluid
+    .row
+      .col-xs-6.col-xs-offset-3
+        h2.text-center Choisir une enquête
+    .row
+      .col-xs-8.col-xs-offset-2
+        form(action="" method="post")
+          select.form-control(name='survey')
+            option(value='none') Choisir une enquête
+            each val in surveys
+              option(value='#{val._id}')=val.title
+          .col-xs-1.col-xs-offset-11
+            button.btn.btn-primary(type='submit') Valider
+        br
+    .row
+      .col-xs-6.col-xs-offset-3
+        h1.text-center Données
+    if records
+      .row
+        .col-xs-8.col-xs-offset-2
+          table.table.table-striped.dataTable
+            thead
+              tr
+                th Title
+                th Mots-clefs
+                each val, index in selectedS.measuresTypes
+                  if(val.type == "numeric")
+                    th.numCol
+                      span #{val.title}
+                      if val.standard
+                        span (#{val.standard})
+                  else
+                    th 
+                      span #{val.title}
+                      if val.standard
+                        span (#{val.standard})
+            tfoot
+              tr
+                th(colspan="2") Total:
+                each val, index in selectedS.measuresTypes
+                    th
+            tbody
+              each value, index in records
+                tr
+                  td=value.title
+                  td=value.tags
+                  each val in value.measures
+                    td=val.bulk
+      .row
+        .col-xs-2.col-xs-offset-6
+          button.btn.btn-default(type='button' data-toggle="modal" data-target="#modalForm") Ajouter des données
+          .modal(id="modalForm" role="dialog")
+            .modal-dialog.bg-white.round-border.pad-1
+              form(action="/addRecord" method="post")
+                .row
+                  .col-xs-10.col-xs-offset-1
+                    .form-group
+                      label Titre (Optionnal)
+                      input.form-control(type='text' name="title" placeholder='Enter Title')
+                    .form-group
+                      label Mots-clefs (filtre)
+                      input.form-control.tokenField(type='text' name='tags')
+                      input.form-control(type='hidden' name='oid' value='#{selectedS._id}')
+                    each val, index in selectedS.measuresTypes
+                      .form-group
+                        label=val.title
+                        if (val.possibleValues && val.possibleValues.length >0)
+                          select.form-control(name='#{val.title}')
+                            each pv in val.possibleValues
+                              option(value='#{pv}')=pv
+                        else if (val.type == 'numeric')
+                          input.form-control(type='number' name='#{val.title}' step='any')
+                        else if (val.type =='semantic')
+                          input.form-control(type='text' name='#{val.title}') 
+                        else
+                          input.form-control.datePicker(type='text' name='#{val.title}')
+                      .form-group
+                        input(type='hidden' name='standard' value='#{val.standard}' disabled="disabled")
+                .row
+                  .col-xs-2.col-xs-offset-10
+                    button.btn.btn-primary(type='submit') Valider   
+        .col-xs-2
+          a(href="/addChart?survey=#{selectedS._id}")
+            button.btn.btn-default(type="button") Créer un graphique
+    else
+      .row
+        .col-xs-8.col-xs-offset-2
+          p.text-center Il n'y a aucune donnée à afficher
+    .row
+      .col-xs-1.col-xs-offset-8
+        a(href='/')
+          button.btn.btn-default(type="button") Retour au menu principal
+  

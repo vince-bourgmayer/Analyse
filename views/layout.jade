@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title= title
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    link(href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(rel='stylesheet', href='/stylesheets/jquery-ui.min.css')
+    link(rel='stylesheet', href='/stylesheets/jquery-ui.structure.min.css')
+    link(rel='stylesheet', href='/stylesheets/jquery-ui.theme.min.css')
+    link(rel='stylesheet', href='/stylesheets/datatables.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-iconpicker.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-tokenfield.min.css')
+
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+  body
+    block content
+
+  script(src='/javascripts/jquery-1.12.1.min.js')
+  script(src='/javascripts/datatables.min.js')
+  script(src='/javascripts/jquery-ui.min.js')
+  script(src='/javascripts/highcharts.js')
+  script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js')
+  script(src='/javascripts/iconset-glyphicon.min.js')
+  script(src='/javascripts/bootstrap-iconpicker.min.js')
+  script(src='/javascripts/bootstrap-tokenfield.min.js')
+  script(src='/javascripts/plugin.js')
+  if (charts)
+      block finalJS

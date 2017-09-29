@@ -1,0 +1,76 @@
+//Ceci est un vieux test
+
+extends layout
+
+block content
+  .container-fluid
+    .row
+      .col-xs-6.col-xs-offset-3
+        h1.text-center Créer un graphique
+    .row
+      .col-xs-6.col-xs-offset-3
+        h5.text-center Choisir une enquête
+    .row
+      .col-xs-6.col-xs-offset-3
+        form(action="" method="post")
+          input(type='hidden' name='usr' value='#{usr._id}')
+          select.form-control(name='survey')
+            option(value='none') Choisir une enquête
+            each val in surveys
+              option(value='#{val._id}')=val.title
+          a(href='/')
+            button.btn.btn-default(type="button") Annuler
+          &nbsp;
+          button.btn.btn-primary(type='submit') Valider
+        br
+        br
+    if surveySel
+      .row
+        .col-xs-6.col-xs-offset-3
+          h1.text-center Option de génération du graphique
+        .col-xs-8.col-xs-offset-2
+          h3.text-center=surveySel.title
+        form(action="addChart" method="post")
+          .row
+            .col-xs-2.col-xs-offset-2
+              input(type='hidden' name='usr' value='#{usr._id}')
+              input(type='hidden' name='surveyID' value='#{surveySel._id}')
+              label Choix du type de graphique
+              select.form-control(name='chartType')
+                option(value='bar') Bar
+                option(value='column') Colonne
+                option(value='line') Line
+                option(value='pie') Camembert
+                option(value='pyramid') Pyramide
+                option(value='spline') Spline
+                option(value='serie') Série
+            .col-xs-2
+              label Titre
+              input.form-control(type='text' name='title')
+            .col-xs-2
+              label Choix de l'échelle pour l'axe X
+              select.form-control(name='xAxis')
+                each mT in surveySel.measuresTypes
+                  option(value='#{mT.title}')=mT.title
+            .col-xs-2
+              label Choix de l'échelle pour l'axe Y
+              select.form-control(name='yAxis')
+                each mT in surveySel.measuresTypes
+                  option(value='#{mT.title}')=mT.title
+            //.row
+              .col-xs-2  
+                label Type d'opération
+                select.form-control(name='operation')
+                  option(value='sum') Somme
+                  option(value='average') Moyenne
+                  option(value='count') Compter le nombre d'élément
+            //.row
+              .col-xs-3
+                button.btn.btn-default(type="button") Ajouter un filtre
+            .row
+              .col-xs-3.col-xs-offset-9
+                button.btn.btn-default(type="submit") Créer
+
+
+//En faite pour chaque colonne je dois permettre d'ajouter un filtre. Reste à définir le type de filtre et vraiment trouver comment créer des formulaires dynamiques avec JQuery... 
+

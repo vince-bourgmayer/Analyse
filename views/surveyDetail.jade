@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  .container-fluid
+    .row
+      .col-md-8.col-md-offset-2
+        h1.text-center Detail of #{survey.title} !
+        br
+    .row
+      .col-md-8.col-md-offset-2
+        h3 From 
+          span #{survey.dateStart.getDate()}/#{survey.dateStart.getMonth()+1}/#{survey.dateStart.getFullYear()} 
+          span to  
+          span #{survey.dateEnd.getDate()}/#{survey.dateEnd.getMonth()+1}/#{survey.dateEnd.getFullYear()}
+    .row
+      .col-md-8.col-md-offset-2
+        p Mots-clefs: #{survey.tags}
+        br
+        button(type='button' class="btn btn-default btn-lg" data-toggle="modal" data-target="#modalForm") Add Measure Type
+        .modal(id="modalForm" role="dialog")
+          .modal-dialog.bg-white.round-border.pad-1
+            form(method="post" action='')
+              .form-group
+                label Title
+                input.form-control(type='text' name='title')
+              .form-group
+                label Type
+                select.form-control(name='type')
+                  option(value='semantic') Semantic
+                  option(value='numeric') Numeric
+                  option(value='date') Date
+              .form-group
+                label Standard (optionnal)
+                input.form-control(type='text' name='standard')
+                input(type='hidden' name='oid' value='#{survey._id}')
+              .form-group
+                label Possible value (optionnal)
+                input.form-control.tokenField(type='text' name='pvalue')
+              &nbsp;
+              button.btn.btn-primary(type='submit') Submit
+
+    .row
+      .col-md-8.col-md-offset-2
+        table.table.table-striped
+          thead
+            tr
+              th Title
+              th Standard
+              th Possible values
+              th Types
+          tbody
+            each val in survey.measuresTypes
+              tr
+                td=val.title
+                td=val.standard
+                td=val.possibleValues
+                td=val.type
+    .row
+      .col-xs-2.col-xs-offset-8
+        a(href="/addRecord?survey=#{survey._id}")
+          button(type="button") Add a record
+        br
+        a(href="/survey") Previous menu

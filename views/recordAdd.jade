@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  div.container-fluid
+    .row
+      .col-xs-6.col-xs-offset-3
+        h1.text-center Ajouter un nouveau relevé
+    .row
+      .col-xs-6.col-xs-offset-3
+        form(action="/addRecord" method="post")
+          .form-group
+            label Titre (Optionnal)
+            input.form-control(type='text' name="title" placeholder='Enter Title')
+          .form-group
+            label Mots-clefs (filtre)
+            input.form-control.tokenField(type='text' name='tags')
+            input.form-control(type='hidden' name='oid' value='#{survey._id}')
+          each val, index in survey.measuresTypes
+            .form-group
+              label=val.title
+              if (val.possibleValues && val.possibleValues.length >0)
+                select.form-control(name='#{val.title}')
+                  each pv in val.possibleValues
+                    option(value='#{pv}')=pv
+              else if (val.type == 'numeric')
+                input.form-control(type='number' name='#{val.title}' step='any')
+              else if (val.type =='semantic')
+                input.form-control(type='text' name='#{val.title}') 
+              else
+                input.form-control.datePicker(type='text' name='#{val.title}')
+            .form-group
+              input(type='hidden' name='standard' value='#{val.standard}' disabled="disabled")
+          a(href='/')
+            button.btn.btn-default(type="button") Annuler
+          &nbsp;
+          button.btn.btn-primary(type='submit') Valider

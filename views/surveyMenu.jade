@@ -1,0 +1,40 @@
+extends layout
+
+block content
+    div.container-fluid
+        .row
+            .col-xs-6.col-xs-offset-3
+                h1.text-center Gérer vos enquêtes
+        if (surveys.length >0)
+            each val, index in surveys
+                //.row
+                    //.col-xs-8.col-xs-offset-2
+                .row.row-height
+                    .col-xs-2.col-xs-offset-2.col-height.vcenter
+                        div
+                            icon(class='huge-icon glyphicon #{val.icon}')
+                    .col-xs-4.col-height.vcenter
+                        h3= val.title
+                        br
+                        p Date de départ: #{val.dateToString(val.dateStart)}
+                        p Date de fin: #{val.dateToString(val.dateEnd)}
+                        p Mesure possible: #{ val.measuresTypes.length}
+                    .col-xs-2.col-height.vcenter
+                        .btn-group-vertical
+                            a(href="/archiveSurvey?survey=#{val._id}")           
+                                button(type='button') Archive
+                                br
+                            a(href="/updateSurvey?survey=#{val._id}")  
+                                button(type='button') Update
+        else
+            .row
+                .col-xs-8.col-xs-offset-2
+                    p Vous n'avez aucune enquête pour le moment!
+                    p Commencer par en créer une!        
+
+        .row
+            .col-xs-2.col-xs-offset-8
+                a(href="/addSurvey")
+                    button(type="button") Ajouter une enquête
+                br
+                a(href="/") Menu précédent

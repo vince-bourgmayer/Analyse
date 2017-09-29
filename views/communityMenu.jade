@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    .container-fluid
+        .row
+            .col-xs-6.col-xs-offset-3
+                h1.text-center Gérer vos communautées 
+                h4.text-center (temporairement transformé en gestion des utilisateurs)
+        .row
+            .col-xs-6.col-xs-offset-3
+                table.table
+                    thead
+                        tr
+                            th Nom du membre
+                            th Action
+                    tbody
+                        each val in users
+                            tr
+                                td=val.username
+                                td
+                                    a(href='/deleteUsr?usr=#{val._id}')
+                                        button(type='button')
+                                            span(class='glyphicon glyphicon-trash')
