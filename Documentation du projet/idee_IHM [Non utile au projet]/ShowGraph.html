@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="js/jquery-2.2.0.min.js"></script>
+        <script src="js/highChart.js"></script>
+    </head>
+    <body>
+        <h2>1.1 idées:</h2>
+        <ul>
+            <li>Montants des achats mensuels / budget mensuels</li>
+            <li>Fréquence et pourcentage de consommation de budget (voir 1.1 mais divisé montant des achats / budgets *100)</li>
+            <li>Pour chaque achat un camembert des grandes catégories d'achat</li>
+            <li>Un histogramme des achat par catégorie et par date (+ équivalent en pourcentage)</li>
+            <li>Un histogramme particulier:
+                1 série par membre de la communauté/famille
+                en X: les différentes sources de dépenses (déplacement, alimentaire, énergie, superficiel)
+                Pour voir qui pourvoit le plus au différentes dépense de la communauté et dans comment sont répartis les dépenses</li>
+            <li>Nombre d'achat par période (semaine, mois, ...) par personne durant une période plus longue=> cela donne la fréquence de déplacement</li>
+            <li>La possibilité de cliquer sur un point du graph 1.1 pour afficher à coté un graphe détailler des achats</li>
+            <li>Systeme de note ecologique sur les courses (moyenne des notes des produits acheté + distance du magasin+ notation en fonction de l'emballage</li>
+            <li>Courbe d'évolution des prix</li>
+            <li> Répartition des légumes (légume fruit, légume feuille, ...)</li>
+        </ul>
+        <h1>Exemples!</h1>
+        <h2>1.2 Fréquence et montants des achats</h2>
+        <div id='shoppingFrequency' style="width: 50%">
+        </div>
+        <h2>1.3 Fréquence et montants des achats</h2>
+        <div id='pieCategory' style='width:50%'></div>
+        <h2>1.4 Poids acheté par catégories</h2>
+        <div id='columnCategoryWeight' style='width:50%'></div>
+    </body>
+    <script>
+    //1.2
+    $('#shoppingFrequency').highcharts({
+        title: {text:"Frequence et montant des achats"},
+        xAxis: {
+            title:{text:"Date"},
+            type: 'datetime'
+        },
+        yAxis:{
+            title:{text:"Montant (€)"}
+        },
+        tooltip: {
+            valueDecimals: 2,
+            valueSuffix: ' €'
+        },
+        series: [{
+            name: 'Pauline',
+            color: '#FF0000',
+            data: [
+                [Date.UTC(2016, 0, 6), 20.34],
+                [Date.UTC(2016, 0, 8), 25.1],
+                [Date.UTC(2016, 0, 9), 38.09],
+                [Date.UTC(2016, 0, 10), 19.8],
+                [Date.UTC(2016, 0, 11), 22],
+                [Date.UTC(2016, 0, 12), 13.87]
+            ]
+        },
+        {
+            name: 'Vincent',
+            color: '#9af147',
+            data: [
+                [Date.UTC(2016, 0, 1), 25],
+                [Date.UTC(2016, 0, 2), 115.13],
+                [Date.UTC(2016, 0, 5), 5],
+                [Date.UTC(2016, 0, 7), 54.35],
+                [Date.UTC(2016, 0, 9), 69.32],
+                [Date.UTC(2016, 0, 13), 5],
+                [Date.UTC(2016, 0, 14), 5],
+                [Date.UTC(2016, 0, 15), 25],
+                [Date.UTC(2016, 0, 16), 74.34]
+            ]
+        }]       
+    });
+
+    //1.3
+$('#pieCategory').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Répartition des achats du 02/01/2016'
+        },
+        tooltip: {
+            valueDecimals: 2,
+            valueSuffix: ' %'
+        },
+        series: [{
+            name: 'Pourcentage',
+            colorByPoint: true,
+            data: [{
+                name: 'Entretien',
+                //raw value: y: 16.75
+                y: 14.54
+            }, {
+                name: 'Alimentaire - Laitage',
+                //y: 32.78
+                y:28.47
+            }, {
+                name: 'Alimentaire - Végétaux',
+                //y: 57.65
+                y:50.07
+            }, {
+                name: 'Alimentaire - Gateaux',
+                //y: 7.95
+                y:6.90
+            }]
+        }]
+    });
+    $('#columnCategoryWeight').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Répartition par poids des différentes catégories acheté'
+        },
+        tooltip: {
+            valueDecimals: 2,
+            valueSuffix: ' Kg'
+        },
+        xAxis: {
+            title:{text:"Categories"},
+            categories: ['Yaourts','Légumes','Fruits','Gateaux','Céréale', 'Fromages']
+      
+        },
+        yAxis:{
+            title:{text:"Poids (Kg)"}
+        },
+        series: [{name:'Achats du 02/01/2016',
+            data: [{
+                color:'#E6E2AF',
+                name: 'Yaourts',
+                y: 1.38
+            },
+            {
+                color:'#AEEE00',
+                name: 'Légumes',
+                y: 0.655
+            },
+            {
+                color:'#C03000',
+                name: 'Fruits',
+                y: 2.108
+            },
+            {
+                color:'#BD8D46',
+                name: 'Gateaux',
+                y: 0.25
+            },
+            {
+                color:'#787746',
+                name: 'Céréale',
+                y: 0.23
+            },
+            {
+                color:'#4BB5C1',
+                name: 'Fromages',
+                y: 0.838
+            }
+            ]
+        }]
+    });
+    </script>
+</html>

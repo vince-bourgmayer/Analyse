@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+        <script src="js/jquery-2.2.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>        
+
+    </head>
+    <body>
+        <input îd='name' type='text'/>
+        <button type='button'>Allez chercher</button>
+
+        <div id='dataTable'>
+            <table id='example'>
+                <thead>
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Code barre</th>
+                        <th>Quantité <br/>(nombre- {L: Litre, Kg : Kilo, U: unité})</br>ex: "24-U"</th>
+                        <th>Nombre</th>
+                        <th>Prix unitaire</th>
+                        <th>Emballage</th>
+                        <th>Tags <br/>(CSV)</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+
+    $(document).ready(function() {
+        $('#example').DataTable( {
+            "ajax":{
+                   url : 'http://localhost:8888/getAll',
+                   type : 'POST', 
+                   //data : "Vincent",
+                   //dataType : 'json'
+                }
+        } );
+    } );
+    </script>
+</html>

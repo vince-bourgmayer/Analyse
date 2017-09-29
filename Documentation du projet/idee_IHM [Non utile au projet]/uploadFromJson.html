@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+        <script src="js/jquery-2.2.0.min.js"></script>       
+
+    </head>
+    <body>
+        <form>
+            <h1>Ajouter une course</h1>
+            <label for='json'>JSON chaine:</label><br/>
+            <textarea name='json' id='json'></textarea></br>
+            <button id="send" type="button">Envoyer</button>
+        </form>
+    </body>
+    <script>
+        $(document).ready(function(){
+            $('#send').click( function() {
+                var json= $("#json").val();
+                $.ajax({
+                   url : 'http://localhost:8888/upload',
+                   type : 'POST', 
+                   data : json,
+                   dataType : 'json'
+                });
+            });
+        });
+
+    </script>
+</html>

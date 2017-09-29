@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+        <script src="js/jquery-2.2.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>        
+
+    </head>
+    <body>
+        <form>
+            <h1>Ajouter une course</h1>
+            <label for='consumer'>Consommateur</label>
+            <input type='text' name='consumer' id='consumer'/></br>
+            <label for='date'>Date:</label>
+            <input type='text' name='date' id='date'/></br>
+            <label for='shop'>Magasin:</label>
+            <input type='text' name='shop' id='shop'/></br></br>
+            <h2>Détail des achats</h2>
+            <button id='addrow' type="button">Ajouter une ligne</button>
+            </br></br>
+            <table id='articlesTable' class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Libelle</th>
+                        <th>Code barre</th>
+                        <th>Quantité <br/>(nombre- {L: Litre, Kg : Kilo, U: unité})</br>ex: "24-U"</th>
+                        <th>Nombre</th>
+                        <th>Prix unitaire</th>
+                        <th>Emballage</th>
+                        <th>Tags <br/>(CSV)</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                </tbody>
+            </table>
+            <input type='hidden' name='jsonString' id='hidden'/>
+            <button id="send" type="button" style="background: orange;width:200px;height:50px;">Envoyer</button>
+        </form>
+        <br/>
+        <p>Montant total:</p>
+        <p id='Total'></p>
+        <br/>
+        <p>Résultat JSON:</p>
+        <p id='result'></p>
+    </body>
+    <script>
+        $(document).ready(function(){
+            var counter = 0;
+            var t = $('#articlesTable').DataTable();
+            $('#addrow').on( 'click', function () {
+                t.row.add( [
+                    "<input type='text' id='lib-"+counter+"' class='lib'/>",
+                    "<input type='number' id='barcode-"+counter+"' class='barcode'/>",
+                    "<input type='text' id='qtte-"+counter+"' class='qtte'/>",
+                    "<input type='number' id='amount-"+counter+"' class='amount'/>",
+                    "<input type='number' id='price-"+counter+"' class='price'/>",
+                    "<input type='text' id='packing-"+counter+"' class='packing'/>",
+                    "<input type='text' id='tags-"+counter+"' class='tags'/>"
+                ] ).draw( false );
+                counter++;
+            } );
+            // Automatically add a first row of data
+            $('#addrow').click();
+            $('#send').click( function() {
+                var total = 0;
+                var json= '{"consumer":"'+$("#consumer").val()+'",\n '+
+                '"date":"'+$("#date").val()+'",\n '+
+                '"shop":"'+$("#shop").val()+'",\n '+
+                '"purchases":[';
+                for(var i = 0; i < counter; i++){
+                    total += parseFloat($("#price-"+i).val()) * parseFloat($("#amount-"+i).val());
+                    json+='{"name":"'+$('#lib-'+i).val()+'",\n';
+                    if($('#barcode-'+i).val() != "")
+                        json +='"barcode":"'+$('#barcode-'+i).val()+'",\n';
+                    json += '"qtte":'+splitQte($('#qtte-'+i).val())+',\n'+
+                    '"amount":"'+$('#amount-'+i).val()+'",\n'+
+                    '"price":"'+$('#price-'+i).val()+'",\n'+
+                    '"packing":['+jsonify($('#packing-'+i).val())+'],\n'+
+                    '"tags":['+jsonify($('#tags-'+i).val())+']}';
+                    if(i < counter-1)
+                        json+=",\n";
+                }
+                json += '],\n"price_total":"'+total+'"';
+                json +="}";
+                $('#Total').html(total);
+                $('#result').html(json);
+                //$('#hidden').val(json);
+                $.ajax({
+                   url : 'http://localhost:8888/upload',
+                   type : 'POST', 
+                   data : json,
+                   dataType : 'json'
+                });
+            } );
+        });
+        function jsonify(elem){
+            var res = elem.split(",");
+            var resF ='';
+            for(var y =0;y < res.length; y++){
+                resF+='"'+res[y]+'"';
+                if(y < res.length-1)
+                    resF+=",";
+            }
+            return resF;
+        }
+
+        function splitQte(elem){
+            var s = elem.split("-");
+            return '{"dosage":"'+s[0]+
+            '","standard":"'+s[1]+'"}';
+        }
+    </script>
+</html>
